@@ -1,0 +1,5 @@
+"""
+Paper Manager - Main package
+"""
+
+
