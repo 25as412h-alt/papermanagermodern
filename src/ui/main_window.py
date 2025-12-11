@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
         self._connect_signals()
     
     def _create_sidebar(self) -> QWidget:
-        """Create and return the sidebar widget"""
+        """サイドバーウィジェットを作成して返す"""
         sidebar = QWidget()
         sidebar.setFixedWidth(220)
         sidebar.setStyleSheet("""
@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(5, 20, 5, 20)
         layout.setSpacing(5)
         
-        # App title
+        # アプリケーションタイトル
         title = QLabel("論文管理")
         title.setStyleSheet("""
             QLabel {
@@ -92,7 +92,7 @@ class MainWindow(QMainWindow):
         """)
         layout.addWidget(title)
         
-        # Navigation buttons
+        # ナビゲーションボタン
         self.nav_buttons = {}
         nav_items = [
             ("ホーム", "home", "home"),
@@ -104,11 +104,19 @@ class MainWindow(QMainWindow):
         ]
         
         for text, key, icon in nav_items:
-            btn = SidebarButton(text, f":/icons/{icon}.png")
+            try:
+                # アイコン付きでボタンを作成（アイコンが読み込めない場合はテキストのみ）
+                icon_path = f":/icons/{icon}.png"
+                btn = SidebarButton(text, icon_path)
+            except Exception as e:
+                print(f"アイコンの読み込みに失敗しました: {icon}.png - {str(e)}")
+                # アイコンなしでボタンを作成
+                btn = SidebarButton(text)
+                
             self.nav_buttons[key] = btn
             layout.addWidget(btn)
         
-        # Add stretch to push buttons to top
+        # ボタンを上部に配置するためのスペーサー
         layout.addStretch()
         
         return sidebar
